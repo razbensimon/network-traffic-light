@@ -49,6 +49,29 @@ macOS Login Items. The setting is disabled by default and reflects macOS's
 actual registration state. If approval is required, enable it in System
 Settings → General → Login Items.
 
+### Updates
+
+The installed app checks the update feed once a day by default. Toggle
+**Automatically check for updates** off to stop background checks, or use
+**Check for Updates…** to check immediately. Update archives and the feed are
+verified with the app's embedded EdDSA public key before installation; updates
+are never installed silently.
+
+Update checks fetch the public `appcast.xml` from this repository's GitHub raw
+URL. If an update is available, the selected archive is downloaded from its
+GitHub Release only after you approve it.
+
+To prepare a release archive and signed appcast entry:
+
+```bash
+./Scripts/prepare-update-release.sh
+```
+
+Upload the reported ZIP to the matching GitHub release tag, then commit and
+push the resulting `appcast.xml` so users never receive a link to an
+unavailable release. The private signing key stays in the local
+macOS Keychain and is never added to this repository.
+
 ### What the rates mean
 
 The rates are aggregate traffic on the active primary network interface:

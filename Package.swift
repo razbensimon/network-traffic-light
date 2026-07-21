@@ -7,11 +7,20 @@ let package = Package(
     products: [
         .executable(name: "NetworkTrafficLight", targets: ["NetworkTrafficLightApp"])
     ],
+    dependencies: [
+        .package(
+            url: "https://github.com/sparkle-project/Sparkle",
+            from: "2.9.4"
+        )
+    ],
     targets: [
         .target(name: "NetworkTrafficLightCore"),
         .executableTarget(
             name: "NetworkTrafficLightApp",
-            dependencies: ["NetworkTrafficLightCore"]
+            dependencies: [
+                "NetworkTrafficLightCore",
+                .product(name: "Sparkle", package: "Sparkle")
+            ]
         ),
         .executableTarget(
             name: "NetworkTrafficLightChecks",

@@ -21,7 +21,8 @@ final class StatusItemController: NSObject, ObservableObject {
             rootView: StatusPopover(
                 model: model,
                 preferences: model.preferences,
-                launchAtLogin: model.launchAtLogin
+                launchAtLogin: model.launchAtLogin,
+                updates: model.updates
             )
         )
 

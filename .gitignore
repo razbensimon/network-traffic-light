@@ -1,5 +1,8 @@
 .DS_Store
 .build/
 build/
+release-artifacts/
 .swiftpm/
 *.xcuserstate
+sparkle-private-key*
+*.ed25519

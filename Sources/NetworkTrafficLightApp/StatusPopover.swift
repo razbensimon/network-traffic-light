@@ -6,6 +6,7 @@ struct StatusPopover: View {
     @ObservedObject var model: NetworkStatusViewModel
     @ObservedObject var preferences: Preferences
     @ObservedObject var launchAtLogin: LaunchAtLoginController
+    @ObservedObject var updates: UpdateController
 
     var body: some View {
         if #available(macOS 26.0, *) {
@@ -47,6 +48,16 @@ struct StatusPopover: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
+            }
+            Toggle(
+                "Automatically check for updates",
+                isOn: Binding(
+                    get: { updates.automaticallyChecksForUpdates },
+                    set: { updates.automaticallyChecksForUpdates = $0 }
+                )
+            )
+            Button("Check for Updates…") {
+                updates.checkForUpdates()
             }
             Toggle("Connection health check", isOn: $preferences.healthChecksEnabled)
                 .onChange(of: preferences.healthChecksEnabled) { _ in
