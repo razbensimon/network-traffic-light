@@ -18,7 +18,11 @@ final class StatusItemController: NSObject, ObservableObject {
 
         popover.behavior = .transient
         popover.contentViewController = NSHostingController(
-            rootView: StatusPopover(model: model, preferences: model.preferences)
+            rootView: StatusPopover(
+                model: model,
+                preferences: model.preferences,
+                launchAtLogin: model.launchAtLogin
+            )
         )
 
         guard let button = statusItem.button else {
@@ -44,6 +48,7 @@ final class StatusItemController: NSObject, ObservableObject {
         if popover.isShown {
             popover.performClose(nil)
         } else {
+            model.launchAtLogin.refresh()
             popover.show(
                 relativeTo: button.bounds,
                 of: button,

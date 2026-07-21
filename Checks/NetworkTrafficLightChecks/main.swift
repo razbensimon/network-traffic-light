@@ -120,6 +120,17 @@ expectEqual(
     .yellow,
     "pending health probe"
 )
+expectEqual(LaunchAtLoginState.enabled.isEnabled, true, "enabled login item")
+expectEqual(
+    LaunchAtLoginState.notRegistered.isEnabled,
+    false,
+    "disabled login item"
+)
+expectEqual(
+    LaunchAtLoginState.requiresApproval.guidance,
+    "Enable Network Traffic Light in System Settings → General → Login Items." as String?,
+    "approval guidance"
+)
 
 let samplerCounters = [
     InterfaceCounters(receivedBytes: 1_000, sentBytes: 500, timestamp: 10),

@@ -5,6 +5,7 @@ import SwiftUI
 struct StatusPopover: View {
     @ObservedObject var model: NetworkStatusViewModel
     @ObservedObject var preferences: Preferences
+    @ObservedObject var launchAtLogin: LaunchAtLoginController
 
     var body: some View {
         if #available(macOS 26.0, *) {
@@ -34,6 +35,19 @@ struct StatusPopover: View {
             Toggle("Show download rate", isOn: $preferences.showDownloadRate)
             Toggle("Show upload rate", isOn: $preferences.showUploadRate)
             Toggle("Use Mbps (Fast.com-style)", isOn: $preferences.useMegabitsPerSecond)
+            Toggle(
+                "Launch at login",
+                isOn: Binding(
+                    get: { launchAtLogin.isEnabled },
+                    set: { launchAtLogin.setEnabled($0) }
+                )
+            )
+            if let message = launchAtLogin.message {
+                Text(message)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
             Toggle("Connection health check", isOn: $preferences.healthChecksEnabled)
                 .onChange(of: preferences.healthChecksEnabled) { _ in
                     model.restartMonitoring()

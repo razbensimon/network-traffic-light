@@ -42,6 +42,13 @@ By default, only the dot is visible. Enable **Show download rate** and/or
 **Use Mbps (Fast.com-style)** to show decimal megabits per second (`Mbps` or
 `Gbps`) instead of the default byte-based rate.
 
+### Launch at login
+
+Enable **Launch at login** in the popover to register the installed app with
+macOS Login Items. The setting is disabled by default and reflects macOS's
+actual registration state. If approval is required, enable it in System
+Settings → General → Login Items.
+
 ### What the rates mean
 
 The rates are aggregate traffic on the active primary network interface:

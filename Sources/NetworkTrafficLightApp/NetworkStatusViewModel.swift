@@ -7,6 +7,7 @@ final class NetworkStatusViewModel: ObservableObject {
     @Published private(set) var rate: TrafficRate?
 
     let preferences: Preferences
+    let launchAtLogin: LaunchAtLoginController
 
     private let sampler: TrafficSampler
     private let healthMonitor: PathHealthMonitor
@@ -20,6 +21,7 @@ final class NetworkStatusViewModel: ObservableObject {
         healthMonitor: PathHealthMonitor = PathHealthMonitor()
     ) {
         self.preferences = preferences
+        launchAtLogin = LaunchAtLoginController()
         self.sampler = sampler
         self.healthMonitor = healthMonitor
 
