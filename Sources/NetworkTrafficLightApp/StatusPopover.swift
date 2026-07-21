@@ -99,10 +99,7 @@ struct StatusPopover: View {
         let version = Bundle.main.object(
             forInfoDictionaryKey: "CFBundleShortVersionString"
         ) as? String ?? "—"
-        let build = Bundle.main.object(
-            forInfoDictionaryKey: "CFBundleVersion"
-        ) as? String ?? "—"
-        return "v\(version) (\(build))"
+        return "v\(version)"
     }
 
     private var statusText: String {
