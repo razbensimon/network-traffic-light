@@ -3,6 +3,12 @@
 A local-only macOS menu-bar indicator for connection health and optional live
 upload/download rates.
 
+## Screenshots
+
+![Menu-bar network indicator](docs/images/menu-bar-indicator.png)
+
+![Network Traffic Light status popover](docs/images/status-popover.png)
+
 ## Requirements
 
 - macOS 13+
