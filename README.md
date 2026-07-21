@@ -53,24 +53,37 @@ Settings → General → Login Items.
 
 The installed app checks the update feed once a day by default. Toggle
 **Automatically check for updates** off to stop background checks, or use
-**Check for Updates…** to check immediately. Update archives and the feed are
-verified with the app's embedded EdDSA public key before installation; updates
-are never installed silently.
+**Check for Updates…** to check immediately. Every downloaded update archive
+is verified with the app's embedded EdDSA public key before installation;
+updates are never installed silently.
 
 Update checks fetch the public `appcast.xml` from this repository's GitHub raw
 URL. If an update is available, the selected archive is downloaded from its
 GitHub Release only after you approve it.
 
-To prepare a release archive and signed appcast entry:
+#### Release process
+
+1. Update `CFBundleShortVersionString` and `CFBundleVersion` in
+   `Resources/Info.plist`. The build number must always increase.
+2. Run the checks:
+
+   ```bash
+   swift run NetworkTrafficLightChecks
+   ```
+
+3. Prepare the signed release archive and update entry:
 
 ```bash
 ./Scripts/prepare-update-release.sh
 ```
 
-Upload the reported ZIP to the matching GitHub release tag, then commit and
-push the resulting `appcast.xml` so users never receive a link to an
-unavailable release. The private signing key stays in the local
-macOS Keychain and is never added to this repository.
+4. Commit and push the code and version changes, excluding `appcast.xml`.
+5. Create GitHub Release tag `v<version>` and upload the ZIP reported by the
+   script.
+6. Commit and push the generated `appcast.xml`.
+
+Uploading the ZIP before publishing `appcast.xml` ensures that an installed app
+never receives an update link before the archive is available.
 
 ### What the rates mean
 
