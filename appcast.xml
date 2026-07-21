@@ -1,9 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version='1.0' encoding='utf-8'?>
 <rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
     <channel>
         <title>Network Traffic Light Updates</title>
         <link>https://github.com/razbensimon/network-traffic-light/releases</link>
         <description>Signed Network Traffic Light updates.</description>
+        <item>
+            <title>1.1.1</title>
+            <pubDate>Tue, 21 Jul 2026 19:04:10 +0300</pubDate>
+            <sparkle:version>3</sparkle:version>
+            <sparkle:shortVersionString>1.1.1</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+            <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
+            <enclosure url="https://github.com/razbensimon/network-traffic-light/releases/download/v1.1.1/NetworkTrafficLight-1.1.1.zip" length="1164896" type="application/octet-stream" sparkle:edSignature="jK0fBjeTqODDvTTrmnd1BnErpMyJqZEMixqRpSy/idsKVOfD7y3rA3ROAH1NTHxPH0FrPvM801ipJUuWd2qCCg==" />
+            </item>
         <item>
             <title>1.1.0</title>
             <pubDate>Tue, 21 Jul 2026 18:30:00 +0300</pubDate>
@@ -11,7 +20,7 @@
             <sparkle:shortVersionString>1.1.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
             <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
-            <enclosure url="https://github.com/razbensimon/network-traffic-light/releases/download/v1.1.0/NetworkTrafficLight-1.1.0.zip" length="1161078" type="application/octet-stream" sparkle:edSignature="yK2PFADJjt6KXIsutwrVVKYWWkkk02w/ZHQms7ckwYo/Ayg4eNNCu6V2Lv/jLB8vQ4H+uXn3GZGTTK/TEK+6AQ=="/>
+            <enclosure url="https://github.com/razbensimon/network-traffic-light/releases/download/v1.1.0/NetworkTrafficLight-1.1.0.zip" length="1161078" type="application/octet-stream" sparkle:edSignature="yK2PFADJjt6KXIsutwrVVKYWWkkk02w/ZHQms7ckwYo/Ayg4eNNCu6V2Lv/jLB8vQ4H+uXn3GZGTTK/TEK+6AQ==" />
         </item>
     </channel>
 </rss>
