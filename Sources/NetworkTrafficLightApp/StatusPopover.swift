@@ -1,0 +1,65 @@
+import AppKit
+import NetworkTrafficLightCore
+import SwiftUI
+
+struct StatusPopover: View {
+    @ObservedObject var model: NetworkStatusViewModel
+    @ObservedObject var preferences: Preferences
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(statusText)
+                .font(.headline)
+
+            LabeledContent(
+                "Download",
+                value: model.rate.map { RateFormatter.string(for: $0.downloadBytesPerSecond) } ?? "—"
+            )
+            LabeledContent(
+                "Upload",
+                value: model.rate.map { RateFormatter.string(for: $0.uploadBytesPerSecond) } ?? "—"
+            )
+
+            Divider()
+
+            Toggle("Show download rate", isOn: $preferences.showDownloadRate)
+            Toggle("Show upload rate", isOn: $preferences.showUploadRate)
+            Toggle("Use Mbps (Fast.com-style)", isOn: $preferences.useMegabitsPerSecond)
+            Toggle("Connection health check", isOn: $preferences.healthChecksEnabled)
+                .onChange(of: preferences.healthChecksEnabled) { _ in
+                    model.restartMonitoring()
+                }
+
+            Picker("Sampling interval", selection: $preferences.sampleInterval) {
+                Text("1 second").tag(TimeInterval(1))
+                Text("2 seconds").tag(TimeInterval(2))
+                Text("5 seconds").tag(TimeInterval(5))
+                Text("10 seconds").tag(TimeInterval(10))
+            }
+            .onChange(of: preferences.sampleInterval) { _ in
+                model.restartMonitoring()
+            }
+
+            Divider()
+
+            Button("Quit Network Traffic Light") {
+                NSApplication.shared.terminate(nil)
+            }
+        }
+        .padding()
+        .frame(width: 290)
+    }
+
+    private var statusText: String {
+        switch model.indicator {
+        case .gray:
+            "Starting network monitor"
+        case .green:
+            "Network healthy"
+        case .yellow:
+            "Network health uncertain"
+        case .red:
+            "No usable network path"
+        }
+    }
+}
