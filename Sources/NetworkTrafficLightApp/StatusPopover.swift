@@ -7,6 +7,15 @@ struct StatusPopover: View {
     @ObservedObject var preferences: Preferences
 
     var body: some View {
+        if #available(macOS 26.0, *) {
+            popoverContent
+                .glassEffect(.regular, in: .rect(cornerRadius: 20))
+        } else {
+            popoverContent
+        }
+    }
+
+    private var popoverContent: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(statusText)
                 .font(.headline)
