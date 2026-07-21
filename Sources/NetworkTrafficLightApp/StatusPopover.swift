@@ -19,8 +19,14 @@ struct StatusPopover: View {
 
     private var popoverContent: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(statusText)
-                .font(.headline)
+            HStack {
+                Text(statusText)
+                    .font(.headline)
+                Spacer()
+                Text(versionText)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
 
             LabeledContent(
                 "Download",
@@ -30,6 +36,21 @@ struct StatusPopover: View {
                 "Upload",
                 value: model.rate.map { RateFormatter.string(for: $0.uploadBytesPerSecond) } ?? "—"
             )
+
+            Divider()
+
+            Text("Updates")
+                .font(.headline)
+            Toggle(
+                "Automatically check for updates",
+                isOn: Binding(
+                    get: { updates.automaticallyChecksForUpdates },
+                    set: { updates.automaticallyChecksForUpdates = $0 }
+                )
+            )
+            Button("Check for Updates…") {
+                updates.checkForUpdates()
+            }
 
             Divider()
 
@@ -48,16 +69,6 @@ struct StatusPopover: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
-            }
-            Toggle(
-                "Automatically check for updates",
-                isOn: Binding(
-                    get: { updates.automaticallyChecksForUpdates },
-                    set: { updates.automaticallyChecksForUpdates = $0 }
-                )
-            )
-            Button("Check for Updates…") {
-                updates.checkForUpdates()
             }
             Toggle("Connection health check", isOn: $preferences.healthChecksEnabled)
                 .onChange(of: preferences.healthChecksEnabled) { _ in
@@ -82,6 +93,16 @@ struct StatusPopover: View {
         }
         .padding()
         .frame(width: 290)
+    }
+
+    private var versionText: String {
+        let version = Bundle.main.object(
+            forInfoDictionaryKey: "CFBundleShortVersionString"
+        ) as? String ?? "—"
+        let build = Bundle.main.object(
+            forInfoDictionaryKey: "CFBundleVersion"
+        ) as? String ?? "—"
+        return "v\(version) (\(build))"
     }
 
     private var statusText: String {

@@ -4,6 +4,7 @@ set -euo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$root"
 
+swift build -c release
 bin_dir="$(swift build -c release --show-bin-path)"
 app="$root/build/NetworkTrafficLight.app"
 sparkle_framework="$root/.build/artifacts/sparkle/Sparkle/Sparkle.xcframework/macos-arm64_x86_64/Sparkle.framework"
