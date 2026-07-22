@@ -154,4 +154,11 @@ expectNil(sampledRates[0], "first sample baseline")
 expectEqual(sampledRates[1]?.downloadBytesPerSecond, 2_048, "sampled download rate")
 expectEqual(sampledRates[1]?.uploadBytesPerSecond, 512, "sampled upload rate")
 
+var reopenCount = 0
+let reopenCoordinator = AppReopenCoordinator {
+    reopenCount += 1
+}
+reopenCoordinator.handleReopen()
+expectEqual(reopenCount, 1, "reopen callback")
+
 print("Domain and sampler checks passed")

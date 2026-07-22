@@ -12,10 +12,15 @@ build="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$plist")"
 archive_name="NetworkTrafficLight-${version}.zip"
 archive="$release_dir/$archive_name"
 download_url="https://github.com/razbensimon/network-traffic-light/releases/download/v${version}/"
+key_source_args=()
 
 if [[ ! -x "$sparkle_bin/generate_appcast" ]]; then
     echo "Sparkle tools are unavailable. Run 'swift package resolve' first." >&2
     exit 1
+fi
+
+if [[ -n "${SPARKLE_ED_KEY_FILE:-}" ]]; then
+    key_source_args=(--ed-key-file "$SPARKLE_ED_KEY_FILE")
 fi
 
 "$root/Scripts/build-app.sh"
@@ -25,6 +30,7 @@ ditto -c -k --keepParent "$root/build/NetworkTrafficLight.app" "$archive"
 
 cp "$root/appcast.xml" "$release_dir/appcast.xml"
 "$sparkle_bin/generate_appcast" \
+    "${key_source_args[@]}" \
     --download-url-prefix "$download_url" \
     --maximum-deltas 0 \
     --maximum-versions 0 \

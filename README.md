@@ -3,6 +3,8 @@
 A local-only macOS menu-bar indicator for connection health and optional live
 upload/download rates.
 
+![Network Traffic Light app icon](docs/images/app-icon.png)
+
 ## Screenshots
 
 ![Menu-bar network indicator](docs/images/menu-bar-indicator.png)

@@ -42,21 +42,29 @@ final class StatusItemController: NSObject, ObservableObject {
     }
 
     @objc private func togglePopover() {
-        guard let button = statusItem.button else {
+        guard statusItem.button != nil else {
             return
         }
 
         if popover.isShown {
             popover.performClose(nil)
         } else {
-            model.launchAtLogin.refresh()
-            popover.show(
-                relativeTo: button.bounds,
-                of: button,
-                preferredEdge: .minY
-            )
-            popover.contentViewController?.view.window?.makeKey()
+            showPopover()
         }
+    }
+
+    func showPopover() {
+        guard let button = statusItem.button else {
+            return
+        }
+
+        model.launchAtLogin.refresh()
+        popover.show(
+            relativeTo: button.bounds,
+            of: button,
+            preferredEdge: .minY
+        )
+        popover.contentViewController?.view.window?.makeKey()
     }
 
     private func updateButton() {
