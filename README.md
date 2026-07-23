@@ -31,13 +31,21 @@ open build/NetworkTrafficLight.app
 
 ## How the indicator works
 
-The menu-bar dot describes connection health:
+The menu-bar dot describes whether the connection looks stable enough for
+interactive work (for example sending an agent prompt). Throughput is not used:
+an idle but healthy link stays green.
 
-- Green: macOS reports a usable network path and the latest health check
-  succeeded.
-- Yellow: a path exists, but the health check is pending or failed.
-- Red: macOS reports no usable network path.
+When **Connection health check** is enabled (the default):
+
+- Green: the last probe succeeded in under 800ms, and neither of the last two
+  probes failed.
+- Yellow: the latest probe is pending, succeeded slowly (800ms–3s), or exactly
+  one of the last two probes failed.
+- Red: macOS reports no usable path, two consecutive probes failed, or the
+  latest success took 3s or longer.
 - Gray: the app is starting or resetting its sample baseline.
+
+With health checks disabled, a satisfied path stays green (path-only mode).
 
 By default, only the dot is visible. Enable **Show download rate** and/or
 **Show upload rate** from the popover to add live labels. Enable
@@ -114,9 +122,10 @@ HTTPS `HEAD` request to:
 `https://captive.apple.com/hotspot-detect.html`
 
 It runs once when a usable path is detected and then at most once every
-30 seconds, with a five-second timeout. `HEAD` requests ask for headers only,
-not a response body. Disabling the setting stops these app-originated health
-requests.
+10 seconds, with a five-second timeout. Each completed probe records success
+and wall-clock duration so the indicator can reflect latency and short failure
+streaks. `HEAD` requests ask for headers only, not a response body. Disabling
+the setting stops these app-originated health requests.
 
 The code intentionally targets only that Apple endpoint. It does not disable
 standard URL-session redirects or system proxy configuration, however, so a
@@ -140,4 +149,4 @@ baseline behavior.
 - The app samples only the primary interface’s aggregate byte counters.
 - Rates reset after an interface change until a valid delta exists.
 - A health probe has a five-second timeout, runs no more than once per
-  30 seconds when enabled, and does not run when disabled.
+  10 seconds when enabled, and does not run when disabled.

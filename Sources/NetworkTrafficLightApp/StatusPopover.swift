@@ -107,11 +107,11 @@ struct StatusPopover: View {
         case .gray:
             "Starting network monitor"
         case .green:
-            "Network healthy"
+            "Connection looks stable"
         case .yellow:
-            "Network health uncertain"
+            "Connection is unstable"
         case .red:
-            "No usable network path"
+            "Connection is unreliable"
         }
     }
 }

@@ -13,7 +13,8 @@ final class NetworkStatusViewModel: ObservableObject {
     private let sampler: TrafficSampler
     private let healthMonitor: PathHealthMonitor
     private var pathState: PathState = .starting
-    private var probeState: ProbeState = .notRun
+    private var probePhase: ProbePhase = .notRun
+    private var recentProbes: [ProbeSample] = []
     private var cancellables = Set<AnyCancellable>()
 
     init(
@@ -38,8 +39,9 @@ final class NetworkStatusViewModel: ObservableObject {
             self?.pathState = state
             self?.updateIndicator()
         }
-        healthMonitor.onProbeState = { [weak self] state in
-            self?.probeState = state
+        healthMonitor.onProbeUpdate = { [weak self] phase, recent in
+            self?.probePhase = phase
+            self?.recentProbes = recent
             self?.updateIndicator()
         }
 
@@ -69,7 +71,8 @@ final class NetworkStatusViewModel: ObservableObject {
         healthMonitor.stop()
         rate = nil
         pathState = .starting
-        probeState = .notRun
+        probePhase = .notRun
+        recentProbes = []
         updateIndicator()
         sampler.start(interval: preferences.sampleInterval)
         healthMonitor.start(healthChecksEnabled: preferences.healthChecksEnabled)
@@ -78,7 +81,8 @@ final class NetworkStatusViewModel: ObservableObject {
     private func updateIndicator() {
         indicator = NetworkStatusReducer.indicator(
             path: pathState,
-            probe: probeState,
+            phase: probePhase,
+            recent: recentProbes,
             healthChecksEnabled: preferences.healthChecksEnabled
         )
     }

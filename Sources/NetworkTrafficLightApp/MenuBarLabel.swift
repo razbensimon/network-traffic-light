@@ -43,11 +43,11 @@ struct MenuBarLabel: View {
         case .gray:
             "Network status is starting"
         case .green:
-            "Network is healthy"
+            "Connection looks stable"
         case .yellow:
-            "Network health is uncertain"
+            "Connection is unstable"
         case .red:
-            "Network is unavailable"
+            "Connection is unreliable"
         }
     }
 }

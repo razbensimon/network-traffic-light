@@ -96,7 +96,8 @@ expectEqual(
 expectEqual(
     NetworkStatusReducer.indicator(
         path: .unsatisfied,
-        probe: .notRun,
+        phase: .notRun,
+        recent: [],
         healthChecksEnabled: true
     ),
     .red,
@@ -105,7 +106,8 @@ expectEqual(
 expectEqual(
     NetworkStatusReducer.indicator(
         path: .satisfied,
-        probe: .notRun,
+        phase: .notRun,
+        recent: [],
         healthChecksEnabled: false
     ),
     .green,
@@ -114,11 +116,86 @@ expectEqual(
 expectEqual(
     NetworkStatusReducer.indicator(
         path: .satisfied,
-        probe: .pending,
+        phase: .pending,
+        recent: [],
         healthChecksEnabled: true
     ),
     .yellow,
     "pending health probe"
+)
+expectEqual(
+    NetworkStatusReducer.indicator(
+        path: .satisfied,
+        phase: .sampled,
+        recent: [
+            ProbeSample(succeeded: true, duration: 0.2),
+            ProbeSample(succeeded: true, duration: 0.4)
+        ],
+        healthChecksEnabled: true
+    ),
+    .green,
+    "fast stable probe streak"
+)
+expectEqual(
+    NetworkStatusReducer.indicator(
+        path: .satisfied,
+        phase: .sampled,
+        recent: [ProbeSample(succeeded: true, duration: 1.2)],
+        healthChecksEnabled: true
+    ),
+    .yellow,
+    "slow but successful probe"
+)
+expectEqual(
+    NetworkStatusReducer.indicator(
+        path: .satisfied,
+        phase: .sampled,
+        recent: [
+            ProbeSample(succeeded: true, duration: 0.3),
+            ProbeSample(succeeded: false, duration: 5.0)
+        ],
+        healthChecksEnabled: true
+    ),
+    .yellow,
+    "one recent probe failure"
+)
+expectEqual(
+    NetworkStatusReducer.indicator(
+        path: .satisfied,
+        phase: .sampled,
+        recent: [
+            ProbeSample(succeeded: false, duration: 5.0),
+            ProbeSample(succeeded: false, duration: 5.0)
+        ],
+        healthChecksEnabled: true
+    ),
+    .red,
+    "two consecutive probe failures"
+)
+expectEqual(
+    NetworkStatusReducer.indicator(
+        path: .satisfied,
+        phase: .sampled,
+        recent: [ProbeSample(succeeded: true, duration: 3.5)],
+        healthChecksEnabled: true
+    ),
+    .red,
+    "extremely slow probe success"
+)
+expectEqual(
+    NetworkStatusReducer.greenMaxLatency,
+    0.8,
+    "green latency threshold"
+)
+expectEqual(
+    NetworkStatusReducer.yellowMaxLatency,
+    3.0,
+    "yellow latency threshold"
+)
+expectEqual(
+    NetworkStatusReducer.streakWindow,
+    2,
+    "failure streak window"
 )
 expectEqual(LaunchAtLoginState.enabled.isEnabled, true, "enabled login item")
 expectEqual(
